@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:just_note/helper/text_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Preferences {
