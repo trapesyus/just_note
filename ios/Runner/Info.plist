@@ -2,6 +2,13 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	 <key>NSPhotoLibraryUsageDescription</key>
+  <string>Metin haline getirilecek resmi seçmek için lütfen izin verin.</string>
+  <key>NSCameraUsageDescription</key>
+  <string>Metin haline getirilecek resmi seçmek için lütfen izin verin.</string>
+  
+
+
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>

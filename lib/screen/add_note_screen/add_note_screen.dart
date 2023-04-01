@@ -8,7 +8,6 @@ import 'package:just_note/core/widgets/icon_button_widget.dart';
 import 'package:just_note/core/widgets/textfield_widget.dart';
 import 'package:just_note/screen/add_note_screen/add_note_screen_model/add_note_screen_model.dart';
 import 'package:just_note/screen/home_screen/home_screen.dart';
-import 'package:path/path.dart';
 
 class AddNoteScreen extends StatelessWidget {
   AddNoteScreen({super.key});
@@ -19,14 +18,14 @@ class AddNoteScreen extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       appBar: _customAppBar(context: context),
       floatingActionButton: _addNoteFloatingButton(context: context),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniEndDocked,
       body: Observer(builder: (context) {
         return Column(
           children: [
             Expanded(child: _customTextFieldTitle()),
             Expanded(flex: 6, child: _customTextFieldContent()),
             Container(
-              width: context.getSizeWidth(size: 0.61),
+              width: context.getSizeWidth(size: 0.7),
               height: context.getSizeHeight(size: 0.06),
               decoration: const BoxDecoration(
                   color: ColorConstants.iconBgColor,
@@ -50,6 +49,8 @@ class AddNoteScreen extends StatelessWidget {
           CustomIconButton(
               icon: const Icon(Icons.format_bold),
               onPressed: () => _addNoteScreenModel.isBoldCheck()),
+          CustomIconButton(
+              icon: const Icon(Icons.format_underline), onPressed: () {}),
           Container(
             decoration: BoxDecoration(
                 color: ColorConstants.textFieldHintText,
@@ -58,12 +59,14 @@ class AddNoteScreen extends StatelessWidget {
               children: [
                 CustomIconButton(
                     icon: const Icon(Icons.arrow_drop_up, size: 30),
-                    onPressed: () {},
+                    onPressed: () =>
+                        _addNoteScreenModel.fontSizeChanger(isFontSize: true),
                     color: Colors.deepPurple),
-                const Text('20'),
+                Text(_addNoteScreenModel.fontSize.toInt().toString()),
                 CustomIconButton(
                     icon: const Icon(Icons.arrow_drop_down, size: 30),
-                    onPressed: () {},
+                    onPressed: () =>
+                        _addNoteScreenModel.fontSizeChanger(isFontSize: false),
                     color: Colors.deepPurple)
               ],
             ),
@@ -82,8 +85,13 @@ class AddNoteScreen extends StatelessWidget {
               icon: const Icon(Icons.arrow_back_ios_new)),
           actions: [
             IconButton(
-                onPressed: () async {}, icon: const Icon(Icons.add_a_photo)),
-            IconButton(onPressed: () {}, icon: const Icon(Icons.photo_rounded))
+                onPressed: () async =>
+                    await _addNoteScreenModel.getCamera(context: context),
+                icon: const Icon(Icons.add_a_photo)),
+            IconButton(
+                onPressed: () async =>
+                    await _addNoteScreenModel.getGallery(context: context),
+                icon: const Icon(Icons.photo_rounded))
           ]);
 
   FloatingActionButton _addNoteFloatingButton(
@@ -105,6 +113,7 @@ class AddNoteScreen extends StatelessWidget {
         controller: _addNoteScreenModel.titleController,
         labelStyle: true,
         textAlignCenter: true,
+        fontSize: _addNoteScreenModel.fontSize,
         sizeTop: 0.02,
         verticalHeight: 0.01,
       );
@@ -114,8 +123,9 @@ class AddNoteScreen extends StatelessWidget {
       labelStyle: true,
       isItalic: _addNoteScreenModel.isItalic,
       isBold: _addNoteScreenModel.isBold,
+      fontSize: _addNoteScreenModel.fontSize,
       sizeLeft: 0.02,
       sizeRight: 0.02,
-      verticalHeight: 0.3,
+      verticalHeight: 0,
       horizontalHeight: 0.02);
 }

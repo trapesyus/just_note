@@ -8,9 +8,9 @@ part of 'home_screen_model.dart';
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
-mixin _$HomeScreenModel on _HomeScreenModelBase, Store {
+mixin _$HomeScreenModel on HomeScreenModelBase, Store {
   late final _$notesAtom =
-      Atom(name: '_HomeScreenModelBase.notes', context: context);
+      Atom(name: 'HomeScreenModelBase.notes', context: context);
 
   @override
   ObservableList<NoteDatabaseModel> get notes {
@@ -26,7 +26,7 @@ mixin _$HomeScreenModel on _HomeScreenModelBase, Store {
   }
 
   late final _$isLoadingAtom =
-      Atom(name: '_HomeScreenModelBase.isLoading', context: context);
+      Atom(name: 'HomeScreenModelBase.isLoading', context: context);
 
   @override
   bool get isLoading {
@@ -42,7 +42,7 @@ mixin _$HomeScreenModel on _HomeScreenModelBase, Store {
   }
 
   late final _$isFavAtom =
-      Atom(name: '_HomeScreenModelBase.isFav', context: context);
+      Atom(name: 'HomeScreenModelBase.isFav', context: context);
 
   @override
   bool get isFav {
@@ -57,12 +57,90 @@ mixin _$HomeScreenModel on _HomeScreenModelBase, Store {
     });
   }
 
+  late final _$listViewOneAtom =
+      Atom(name: 'HomeScreenModelBase.listViewOne', context: context);
+
+  @override
+  ObservableList<NoteDatabaseModel> get listViewOne {
+    _$listViewOneAtom.reportRead();
+    return super.listViewOne;
+  }
+
+  @override
+  set listViewOne(ObservableList<NoteDatabaseModel> value) {
+    _$listViewOneAtom.reportWrite(value, super.listViewOne, () {
+      super.listViewOne = value;
+    });
+  }
+
+  late final _$listViewTwooAtom =
+      Atom(name: 'HomeScreenModelBase.listViewTwoo', context: context);
+
+  @override
+  ObservableList<NoteDatabaseModel> get listViewTwoo {
+    _$listViewTwooAtom.reportRead();
+    return super.listViewTwoo;
+  }
+
+  @override
+  set listViewTwoo(ObservableList<NoteDatabaseModel> value) {
+    _$listViewTwooAtom.reportWrite(value, super.listViewTwoo, () {
+      super.listViewTwoo = value;
+    });
+  }
+
+  late final _$getNoteListAsyncAction =
+      AsyncAction('HomeScreenModelBase.getNoteList', context: context);
+
+  @override
+  Future<void> getNoteList() {
+    return _$getNoteListAsyncAction.run(() => super.getNoteList());
+  }
+
+  late final _$HomeScreenModelBaseActionController =
+      ActionController(name: 'HomeScreenModelBase', context: context);
+
+  @override
+  void isLoadingCheck() {
+    final _$actionInfo = _$HomeScreenModelBaseActionController.startAction(
+        name: 'HomeScreenModelBase.isLoadingCheck');
+    try {
+      return super.isLoadingCheck();
+    } finally {
+      _$HomeScreenModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void isFavCheck() {
+    final _$actionInfo = _$HomeScreenModelBaseActionController.startAction(
+        name: 'HomeScreenModelBase.isFavCheck');
+    try {
+      return super.isFavCheck();
+    } finally {
+      _$HomeScreenModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void splitList({required int index}) {
+    final _$actionInfo = _$HomeScreenModelBaseActionController.startAction(
+        name: 'HomeScreenModelBase.splitList');
+    try {
+      return super.splitList(index: index);
+    } finally {
+      _$HomeScreenModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''
 notes: ${notes},
 isLoading: ${isLoading},
-isFav: ${isFav}
+isFav: ${isFav},
+listViewOne: ${listViewOne},
+listViewTwoo: ${listViewTwoo}
     ''';
   }
 }

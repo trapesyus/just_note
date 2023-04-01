@@ -89,12 +89,125 @@ mixin _$NoteScreenModel on NoteScreenModelBase, Store {
     });
   }
 
+  late final _$isItalicAtom =
+      Atom(name: 'NoteScreenModelBase.isItalic', context: context);
+
+  @override
+  bool get isItalic {
+    _$isItalicAtom.reportRead();
+    return super.isItalic;
+  }
+
+  @override
+  set isItalic(bool value) {
+    _$isItalicAtom.reportWrite(value, super.isItalic, () {
+      super.isItalic = value;
+    });
+  }
+
+  late final _$isBoldAtom =
+      Atom(name: 'NoteScreenModelBase.isBold', context: context);
+
+  @override
+  bool get isBold {
+    _$isBoldAtom.reportRead();
+    return super.isBold;
+  }
+
+  @override
+  set isBold(bool value) {
+    _$isBoldAtom.reportWrite(value, super.isBold, () {
+      super.isBold = value;
+    });
+  }
+
+  late final _$fontSizeAtom =
+      Atom(name: 'NoteScreenModelBase.fontSize', context: context);
+
+  @override
+  double get fontSize {
+    _$fontSizeAtom.reportRead();
+    return super.fontSize;
+  }
+
+  @override
+  set fontSize(double value) {
+    _$fontSizeAtom.reportWrite(value, super.fontSize, () {
+      super.fontSize = value;
+    });
+  }
+
   late final _$getNoteAsyncAction =
       AsyncAction('NoteScreenModelBase.getNote', context: context);
 
   @override
   Future<void> getNote({required int index}) {
     return _$getNoteAsyncAction.run(() => super.getNote(index: index));
+  }
+
+  late final _$getUpdateAsyncAction =
+      AsyncAction('NoteScreenModelBase.getUpdate', context: context);
+
+  @override
+  Future<void> getUpdate({required int id, required BuildContext context}) {
+    return _$getUpdateAsyncAction
+        .run(() => super.getUpdate(id: id, context: context));
+  }
+
+  late final _$getDeleteAsyncAction =
+      AsyncAction('NoteScreenModelBase.getDelete', context: context);
+
+  @override
+  Future<void> getDelete({required int id, required BuildContext context}) {
+    return _$getDeleteAsyncAction
+        .run(() => super.getDelete(id: id, context: context));
+  }
+
+  late final _$NoteScreenModelBaseActionController =
+      ActionController(name: 'NoteScreenModelBase', context: context);
+
+  @override
+  void isItalicCheck() {
+    final _$actionInfo = _$NoteScreenModelBaseActionController.startAction(
+        name: 'NoteScreenModelBase.isItalicCheck');
+    try {
+      return super.isItalicCheck();
+    } finally {
+      _$NoteScreenModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void isBoldCheck() {
+    final _$actionInfo = _$NoteScreenModelBaseActionController.startAction(
+        name: 'NoteScreenModelBase.isBoldCheck');
+    try {
+      return super.isBoldCheck();
+    } finally {
+      _$NoteScreenModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void fontSizeChanger({required bool isFontSize}) {
+    final _$actionInfo = _$NoteScreenModelBaseActionController.startAction(
+        name: 'NoteScreenModelBase.fontSizeChanger');
+    try {
+      return super.fontSizeChanger(isFontSize: isFontSize);
+    } finally {
+      _$NoteScreenModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void isLoadingCheck() {
+    final _$actionInfo = _$NoteScreenModelBaseActionController.startAction(
+        name: 'NoteScreenModelBase.isLoadingCheck');
+    try {
+      return super.isLoadingCheck();
+    } finally {
+      _$NoteScreenModelBaseActionController.endAction(_$actionInfo);
+    }
   }
 
   @override
@@ -104,7 +217,10 @@ liste: ${liste},
 isLoading: ${isLoading},
 isEdit: ${isEdit},
 icerikController: ${icerikController},
-titleController: ${titleController}
+titleController: ${titleController},
+isItalic: ${isItalic},
+isBold: ${isBold},
+fontSize: ${fontSize}
     ''';
   }
 }

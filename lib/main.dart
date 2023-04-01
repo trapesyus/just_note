@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:just_note/core/constants/color_constants.dart';
 import 'package:just_note/initialize/initialize.dart';
-import 'package:just_note/screen/home_screen/home_screen.dart';
+import 'package:just_note/screen/splash_screen/splash_screen.dart';
 
 void main() async {
   await Initialize.initialize();
@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
                   backgroundColor: MaterialStateColor.resolveWith(
                       (states) => ColorConstants.iconBgColor))),
           scaffoldBackgroundColor: ColorConstants.appBarBackGreenColor),
-      home: const HomeScreen(),
+      home: const SplashScreen(),
     );
   }
 }

@@ -1,9 +1,10 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:just_note/core/extensions/size_extension.dart';
 
 import '../constants/color_constants.dart';
 
-// ignore: must_be_immutable
 class CustomTextField extends StatelessWidget {
   String? hintText;
   String? suffixText;
@@ -15,6 +16,7 @@ class CustomTextField extends StatelessWidget {
   bool hintTextStyle;
   bool passwordType;
   bool isBold;
+  double fontSize;
   double sizeTop;
   double sizeBottom;
   double sizeLeft;
@@ -26,6 +28,7 @@ class CustomTextField extends StatelessWidget {
 
   CustomTextField(
       {super.key,
+      this.fontSize = 16,
       this.isBold = false,
       this.isItalic = false,
       this.passwordType = false,
@@ -56,6 +59,7 @@ class CustomTextField extends StatelessWidget {
         child: TextField(
           style: TextStyle(
               color: Colors.white,
+              fontSize: fontSize,
               fontStyle: isItalic ? FontStyle.italic : FontStyle.normal,
               fontWeight: isBold ? FontWeight.bold : FontWeight.w500),
           scrollPhysics: const BouncingScrollPhysics(),

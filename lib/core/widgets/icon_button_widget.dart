@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../constants/color_constants.dart';
-
 // ignore: must_be_immutable
 class CustomIconButton extends StatelessWidget {
   Icon icon;

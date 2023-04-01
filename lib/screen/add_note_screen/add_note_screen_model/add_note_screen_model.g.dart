@@ -8,9 +8,9 @@ part of 'add_note_screen_model.dart';
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
-mixin _$AddNoteScreenModel on _AddNoteScreenModelBase, Store {
+mixin _$AddNoteScreenModel on AddNoteScreenModelBase, Store {
   late final _$titleControllerAtom =
-      Atom(name: '_AddNoteScreenModelBase.titleController', context: context);
+      Atom(name: 'AddNoteScreenModelBase.titleController', context: context);
 
   @override
   TextEditingController get titleController {
@@ -26,7 +26,7 @@ mixin _$AddNoteScreenModel on _AddNoteScreenModelBase, Store {
   }
 
   late final _$icerikControllerAtom =
-      Atom(name: '_AddNoteScreenModelBase.icerikController', context: context);
+      Atom(name: 'AddNoteScreenModelBase.icerikController', context: context);
 
   @override
   TextEditingController get icerikController {
@@ -42,7 +42,7 @@ mixin _$AddNoteScreenModel on _AddNoteScreenModelBase, Store {
   }
 
   late final _$isItalicAtom =
-      Atom(name: '_AddNoteScreenModelBase.isItalic', context: context);
+      Atom(name: 'AddNoteScreenModelBase.isItalic', context: context);
 
   @override
   bool get isItalic {
@@ -58,7 +58,7 @@ mixin _$AddNoteScreenModel on _AddNoteScreenModelBase, Store {
   }
 
   late final _$isBoldAtom =
-      Atom(name: '_AddNoteScreenModelBase.isBold', context: context);
+      Atom(name: 'AddNoteScreenModelBase.isBold', context: context);
 
   @override
   bool get isBold {
@@ -73,28 +73,55 @@ mixin _$AddNoteScreenModel on _AddNoteScreenModelBase, Store {
     });
   }
 
-  late final _$_AddNoteScreenModelBaseActionController =
-      ActionController(name: '_AddNoteScreenModelBase', context: context);
+  late final _$fontSizeAtom =
+      Atom(name: 'AddNoteScreenModelBase.fontSize', context: context);
+
+  @override
+  double get fontSize {
+    _$fontSizeAtom.reportRead();
+    return super.fontSize;
+  }
+
+  @override
+  set fontSize(double value) {
+    _$fontSizeAtom.reportWrite(value, super.fontSize, () {
+      super.fontSize = value;
+    });
+  }
+
+  late final _$AddNoteScreenModelBaseActionController =
+      ActionController(name: 'AddNoteScreenModelBase', context: context);
 
   @override
   void isItalicCheck() {
-    final _$actionInfo = _$_AddNoteScreenModelBaseActionController.startAction(
-        name: '_AddNoteScreenModelBase.isItalicCheck');
+    final _$actionInfo = _$AddNoteScreenModelBaseActionController.startAction(
+        name: 'AddNoteScreenModelBase.isItalicCheck');
     try {
       return super.isItalicCheck();
     } finally {
-      _$_AddNoteScreenModelBaseActionController.endAction(_$actionInfo);
+      _$AddNoteScreenModelBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void isBoldCheck() {
-    final _$actionInfo = _$_AddNoteScreenModelBaseActionController.startAction(
-        name: '_AddNoteScreenModelBase.isBoldCheck');
+    final _$actionInfo = _$AddNoteScreenModelBaseActionController.startAction(
+        name: 'AddNoteScreenModelBase.isBoldCheck');
     try {
       return super.isBoldCheck();
     } finally {
-      _$_AddNoteScreenModelBaseActionController.endAction(_$actionInfo);
+      _$AddNoteScreenModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void fontSizeChanger({required bool isFontSize}) {
+    final _$actionInfo = _$AddNoteScreenModelBaseActionController.startAction(
+        name: 'AddNoteScreenModelBase.fontSizeChanger');
+    try {
+      return super.fontSizeChanger(isFontSize: isFontSize);
+    } finally {
+      _$AddNoteScreenModelBaseActionController.endAction(_$actionInfo);
     }
   }
 
@@ -104,7 +131,8 @@ mixin _$AddNoteScreenModel on _AddNoteScreenModelBase, Store {
 titleController: ${titleController},
 icerikController: ${icerikController},
 isItalic: ${isItalic},
-isBold: ${isBold}
+isBold: ${isBold},
+fontSize: ${fontSize}
     ''';
   }
 }

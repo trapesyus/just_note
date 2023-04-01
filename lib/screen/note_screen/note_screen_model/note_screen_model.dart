@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:just_note/core/extensions/navigate.extension.dart';
 import 'package:just_note/core/extensions/snackbar_extension.dart';
@@ -24,12 +22,37 @@ abstract class NoteScreenModelBase with Store {
   TextEditingController icerikController = TextEditingController();
   @observable
   TextEditingController titleController = TextEditingController();
-  String icerik = '';
-  String title = '';
+  @observable
+  bool isItalic = false;
+  @observable
+  bool isBold = false;
+  @observable
+  double fontSize = 16;
+
+  @action
+  void isItalicCheck() {
+    isItalic = !isItalic;
+  }
+
+  @action
+  void isBoldCheck() {
+    isBold = !isBold;
+  }
+
+  @action
+  void fontSizeChanger({required bool isFontSize}) {
+    if (isFontSize == true) {
+      fontSize += 1;
+    } else {
+      fontSize -= 1;
+    }
+  }
+
   void isEditCheck() async {
     isEdit = !isEdit;
   }
 
+  @action
   void isLoadingCheck() {
     isLoading = !isLoading;
   }
@@ -38,23 +61,24 @@ abstract class NoteScreenModelBase with Store {
   @action
   Future<void> getNote({required int index}) async {
     liste.addAll(await noteDatabaseService.queryRowCount(index));
+    TextEditingController title = TextEditingController(text: liste[0].title);
+    TextEditingController icerik = TextEditingController(text: liste[0].icerik);
+    titleController.text = title.value.text;
+    icerikController.text = icerik.value.text;
   }
 
-  Future<void> getUpdate({required int id}) async {
-    if (icerikController.value.text.contains(liste[0].icerik) &&
-        titleController.value.text.contains(liste[0].title)) {
-      icerikController.text = icerikController.value.text;
-      titleController.text = titleController.value.text;
-    } else {
-      icerikController.text = liste[0].icerik + icerikController.value.text;
-      titleController.text = liste[0].title + titleController.value.text;
-    }
-
+  @action
+  Future<void> getUpdate(
+      {required int id, required BuildContext context}) async {
     NoteDatabaseModel item = NoteDatabaseModel(
         id: id, title: titleController.text, icerik: icerikController.text);
-    await noteDatabaseService.updateRow(id, item);
+    await noteDatabaseService.updateRow(id, item).whenComplete(() {
+      const HomeScreen().navigateToPushReplacement(context: context);
+      context.snackBarExtension(content: 'Not Başarıyla Güncellendi');
+    });
   }
 
+  @action
   Future<void> getDelete(
       {required int id, required BuildContext context}) async {
     await noteDatabaseService.deleteRow(id).whenComplete(() {

@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 extension SnackBarExtension on BuildContext {
   snackBarExtension({required String content}) =>
       ScaffoldMessenger.of(this).showSnackBar(SnackBar(
-        content: Center(child: CustomLabelText(label: content)),
+        content:
+            Center(child: CustomLabelText(label: content, isColorWhite: true)),
         backgroundColor: ColorConstants.iconBgColor,
         duration: const Duration(seconds: 2),
         elevation: 0,

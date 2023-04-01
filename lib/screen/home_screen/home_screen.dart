@@ -5,10 +5,8 @@ import 'package:just_note/core/extensions/size_extension.dart';
 import 'package:just_note/core/extensions/navigate.extension.dart';
 import 'package:just_note/core/widgets/appbar_widget.dart';
 import 'package:just_note/core/widgets/label_text_widget.dart';
-import 'package:just_note/core/widgets/text_widget.dart';
 import 'package:just_note/screen/add_note_screen/add_note_screen.dart';
 import 'package:just_note/screen/home_screen/home_screen_model/home_screen_model.dart';
-import 'package:just_note/screen/note_screen/note_screen_model/note_screen_model.dart';
 
 import '../../core/widgets/card_text_widget.dart';
 import '../note_screen/note_screen_model/note_screen.dart';
@@ -28,14 +26,13 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
   }
 
-  int x = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: _homeScreenFloatingActionButton(context: context),
       appBar: _homeScreenCustomAppBar(),
       body: Observer(builder: (_) {
-        return Column(
+        return Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -45,10 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 physics: const BouncingScrollPhysics(),
                 padding: EdgeInsets.symmetric(
                     horizontal: context.getSizeWidth(size: 0.02)),
-                itemCount: (_homeScreenModel.notes.length % 2 == 0
-                        ? _homeScreenModel.notes.length / 2
-                        : (_homeScreenModel.notes.length / 2) + 1)
-                    .toInt(),
+                itemCount: _homeScreenModel.listViewOne.length,
                 scrollDirection: Axis.vertical,
                 itemBuilder: (context, index) {
                   return Row(
@@ -58,18 +52,36 @@ class _HomeScreenState extends State<HomeScreen> {
                       _homeScreenCardDesign(
                           context: context,
                           index: index,
-                          title: _homeScreenModel.notes[index].title,
-                          text: _homeScreenModel.notes[index].icerik),
-                      _homeScreenCardDesign(
-                          context: context,
-                          index: index + 1,
-                          title: _homeScreenModel.notes[index + 1].title,
-                          text: _homeScreenModel.notes[index + 1].icerik)
+                          title: _homeScreenModel.listViewOne[index].title,
+                          text: _homeScreenModel.listViewOne[index].icerik),
                     ],
                   );
                 },
               ),
-            )
+            ),
+            Expanded(
+              child: ListView.builder(
+                reverse: false,
+                physics: const BouncingScrollPhysics(),
+                padding: EdgeInsets.symmetric(
+                    horizontal: context.getSizeWidth(size: 0.02)),
+                itemCount: _homeScreenModel.listViewTwoo.length,
+                scrollDirection: Axis.vertical,
+                itemBuilder: (context, index) {
+                  return Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      _homeScreenCardDesign(
+                          context: context,
+                          index: index,
+                          title: _homeScreenModel.listViewTwoo[index].title,
+                          text: _homeScreenModel.listViewTwoo[index].icerik),
+                    ],
+                  );
+                },
+              ),
+            ),
           ],
         );
       }),
