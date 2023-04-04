@@ -2,42 +2,62 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:just_note/core/constants/color_constants.dart';
 import 'package:just_note/core/extensions/navigate.extension.dart';
+import 'package:just_note/core/extensions/padding_extension.dart';
 import 'package:just_note/core/extensions/size_extension.dart';
 import 'package:just_note/core/widgets/appbar_widget.dart';
+import 'package:just_note/core/widgets/elevated_button_widget.dart';
 import 'package:just_note/core/widgets/icon_button_widget.dart';
+import 'package:just_note/core/widgets/text_widget.dart';
 import 'package:just_note/core/widgets/textfield_widget.dart';
 import 'package:just_note/screen/add_note_screen/add_note_screen_model/add_note_screen_model.dart';
 import 'package:just_note/screen/home_screen/home_screen.dart';
+
+import '../../helper/text_fonts.dart';
 
 class AddNoteScreen extends StatelessWidget {
   AddNoteScreen({super.key});
   final AddNoteScreenModel _addNoteScreenModel = AddNoteScreenModel();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: _customAppBar(context: context),
-      floatingActionButton: _addNoteFloatingButton(context: context),
-      floatingActionButtonLocation: FloatingActionButtonLocation.miniEndDocked,
-      body: Observer(builder: (context) {
-        return Column(
+    return Observer(builder: (_) {
+      return Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: _customAppBar(context: context),
+        body: Column(
           children: [
+            Align(
+                alignment: Alignment.centerRight,
+                child: _addNoteScreenDropDownButton(context: context)),
             Expanded(child: _customTextFieldTitle()),
             Expanded(flex: 6, child: _customTextFieldContent()),
-            Container(
-              width: context.getSizeWidth(size: 0.7),
-              height: context.getSizeHeight(size: 0.06),
-              decoration: const BoxDecoration(
-                  color: ColorConstants.iconBgColor,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20))),
-              child: _addNoteScreenPalette(),
-            )
+            _addNoteScreenElevatedButton(context)
+                .getPaddingOnly(context: context, bottom: 0.01),
+            _addNoteScreenPaletteContainer(context),
           ],
-        );
-      }),
+        ),
+      );
+    });
+  }
+
+  Container _addNoteScreenPaletteContainer(BuildContext context) {
+    return Container(
+      width: context.getSizeWidth(size: 0.7),
+      height: context.getSizeHeight(size: 0.06),
+      decoration: const BoxDecoration(
+          color: ColorConstants.iconBgColor,
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+      child: _addNoteScreenPalette(),
     );
+  }
+
+  CustomElevatedButton _addNoteScreenElevatedButton(BuildContext context) {
+    return CustomElevatedButton(
+        buttonText: 'Ekle',
+        onPressed: () async => await _addNoteScreenModel.addDatabase(
+            context: context,
+            title: _addNoteScreenModel.titleController.value.text,
+            icerik: _addNoteScreenModel.icerikController.value.text));
   }
 
   Row _addNoteScreenPalette() => Row(
@@ -50,10 +70,11 @@ class AddNoteScreen extends StatelessWidget {
               icon: const Icon(Icons.format_bold),
               onPressed: () => _addNoteScreenModel.isBoldCheck()),
           CustomIconButton(
-              icon: const Icon(Icons.format_underline), onPressed: () {}),
+              icon: const Icon(Icons.format_underline),
+              onPressed: () => _addNoteScreenModel.isUnderlineCheck()),
           Container(
             decoration: BoxDecoration(
-                color: ColorConstants.textFieldHintText,
+                color: Colors.transparent,
                 borderRadius: BorderRadius.circular(10)),
             child: Row(
               children: [
@@ -61,13 +82,15 @@ class AddNoteScreen extends StatelessWidget {
                     icon: const Icon(Icons.arrow_drop_up, size: 30),
                     onPressed: () =>
                         _addNoteScreenModel.fontSizeChanger(isFontSize: true),
-                    color: Colors.deepPurple),
-                Text(_addNoteScreenModel.fontSize.toInt().toString()),
+                    color: ColorConstants.whiteColor),
+                CustomText(
+                    text: _addNoteScreenModel.fontSize.toInt().toString(),
+                    color: ColorConstants.whiteColor),
                 CustomIconButton(
                     icon: const Icon(Icons.arrow_drop_down, size: 30),
                     onPressed: () =>
                         _addNoteScreenModel.fontSizeChanger(isFontSize: false),
-                    color: Colors.deepPurple)
+                    color: ColorConstants.whiteColor),
               ],
             ),
           )
@@ -76,51 +99,76 @@ class AddNoteScreen extends StatelessWidget {
 
   CustomAppBar _customAppBar({required BuildContext context}) => CustomAppBar(
           title: 'Not Ekle',
-          titleStyle: true,
           backgroundColor: ColorConstants.appBarBackGreenColor,
+          titleStyle: true,
           centerTitle: false,
-          leading: IconButton(
-              onPressed: () =>
-                  const HomeScreen().navigateToBack(context: context),
-              icon: const Icon(Icons.arrow_back_ios_new)),
+          leading: Row(
+            children: [
+              IconButton(
+                  onPressed: () =>
+                      const HomeScreen().navigateToBack(context: context),
+                  icon: const Icon(Icons.arrow_back_ios_new)),
+            ],
+          ),
           actions: [
-            IconButton(
+            CustomIconButton(
+                icon: const Icon(Icons.add_a_photo),
                 onPressed: () async =>
-                    await _addNoteScreenModel.getCamera(context: context),
-                icon: const Icon(Icons.add_a_photo)),
-            IconButton(
+                    await _addNoteScreenModel.getCamera(context: context)),
+            CustomIconButton(
+                icon: const Icon(Icons.photo_rounded),
                 onPressed: () async =>
-                    await _addNoteScreenModel.getGallery(context: context),
-                icon: const Icon(Icons.photo_rounded))
+                    await _addNoteScreenModel.getGallery(context: context))
           ]);
 
-  FloatingActionButton _addNoteFloatingButton(
-          {required BuildContext context}) =>
-      FloatingActionButton(
-        onPressed: () async => await _addNoteScreenModel.addDatabase(
-            context: context,
-            title: _addNoteScreenModel.titleController.value.text,
-            icerik: _addNoteScreenModel.icerikController.value.text),
-        backgroundColor: ColorConstants.appBarBackGreenColor,
-        child: const Icon(Icons.task_alt_rounded),
-      );
+  DropdownButton<String> _addNoteScreenDropDownButton(
+      {required BuildContext context}) {
+    return DropdownButton(
+      alignment: Alignment.center,
+      elevation: 0,
+      icon: const Icon(Icons.font_download),
+      dropdownColor: ColorConstants.appBarBackGreenColor,
+      value: _addNoteScreenModel.groupValueFontName,
+      isExpanded: false,
+      items: TextFonts.fontChoiceDropDownItems.map((String items) {
+        return _addNoteScreenDropDownMenuItem(items);
+      }).toList(),
+      onChanged: (String? value) async {
+        await _addNoteScreenModel.dropDownValue(
+            value: value!, context: context);
+      },
+    );
+  }
+
+  DropdownMenuItem<String> _addNoteScreenDropDownMenuItem(String items) {
+    return DropdownMenuItem(
+        value: items,
+        child: CustomText(
+          text: items,
+          color: Colors.white,
+        ));
+  }
+
   CustomTextField _customTextFieldTitle() => CustomTextField(
         sizeLeft: 0.25,
         sizeRight: 0.25,
         isBold: _addNoteScreenModel.isBold,
         isItalic: _addNoteScreenModel.isItalic,
         label: 'Başlık',
+        isUnderline: false,
         controller: _addNoteScreenModel.titleController,
         labelStyle: true,
         textAlignCenter: true,
         fontSize: _addNoteScreenModel.fontSize,
         sizeTop: 0.02,
         verticalHeight: 0.01,
+        horizontalHeight: 0.02,
       );
   CustomTextField _customTextFieldContent() => CustomTextField(
       label: 'İçerik',
       controller: _addNoteScreenModel.icerikController,
       labelStyle: true,
+      isUnderline: _addNoteScreenModel.isUnderline,
       isItalic: _addNoteScreenModel.isItalic,
       isBold: _addNoteScreenModel.isBold,
       fontSize: _addNoteScreenModel.fontSize,

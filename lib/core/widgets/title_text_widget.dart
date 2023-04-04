@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../helper/preferences.dart';
+import '../../helper/text_fonts.dart';
 import '../constants/color_constants.dart';
 
 // ignore: must_be_immutable
@@ -10,9 +12,10 @@ class CustomTitleText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title,
-      style: Theme.of(context).textTheme.titleMedium!.copyWith(
-          color: ColorConstants.titleBlackTextColor,
-          fontWeight: FontWeight.bold),
+      style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+          color: ColorConstants.whiteColor,
+          fontWeight: FontWeight.bold,
+          fontFamily: TextFonts.fontChoice[Preferences.fontName]),
     );
   }
 }

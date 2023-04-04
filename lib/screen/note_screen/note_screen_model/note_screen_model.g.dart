@@ -137,12 +137,64 @@ mixin _$NoteScreenModel on NoteScreenModelBase, Store {
     });
   }
 
+  late final _$isUnderlineAtom =
+      Atom(name: 'NoteScreenModelBase.isUnderline', context: context);
+
+  @override
+  bool get isUnderline {
+    _$isUnderlineAtom.reportRead();
+    return super.isUnderline;
+  }
+
+  @override
+  set isUnderline(bool value) {
+    _$isUnderlineAtom.reportWrite(value, super.isUnderline, () {
+      super.isUnderline = value;
+    });
+  }
+
+  late final _$groupValueFontNameAtom =
+      Atom(name: 'NoteScreenModelBase.groupValueFontName', context: context);
+
+  @override
+  String get groupValueFontName {
+    _$groupValueFontNameAtom.reportRead();
+    return super.groupValueFontName;
+  }
+
+  @override
+  set groupValueFontName(String value) {
+    _$groupValueFontNameAtom.reportWrite(value, super.groupValueFontName, () {
+      super.groupValueFontName = value;
+    });
+  }
+
   late final _$getNoteAsyncAction =
       AsyncAction('NoteScreenModelBase.getNote', context: context);
 
   @override
   Future<void> getNote({required int index}) {
     return _$getNoteAsyncAction.run(() => super.getNote(index: index));
+  }
+
+  late final _$dropDownValueAsyncAction =
+      AsyncAction('NoteScreenModelBase.dropDownValue', context: context);
+
+  @override
+  Future<void> dropDownValue(
+      {required String value, required BuildContext context}) {
+    return _$dropDownValueAsyncAction
+        .run(() => super.dropDownValue(value: value, context: context));
+  }
+
+  late final _$setFontAsyncAction =
+      AsyncAction('NoteScreenModelBase.setFont', context: context);
+
+  @override
+  Future<void> setFont(
+      {required String fontName, required BuildContext context}) {
+    return _$setFontAsyncAction
+        .run(() => super.setFont(fontName: fontName, context: context));
   }
 
   late final _$getUpdateAsyncAction =
@@ -211,6 +263,17 @@ mixin _$NoteScreenModel on NoteScreenModelBase, Store {
   }
 
   @override
+  void isUnderlineCheck() {
+    final _$actionInfo = _$NoteScreenModelBaseActionController.startAction(
+        name: 'NoteScreenModelBase.isUnderlineCheck');
+    try {
+      return super.isUnderlineCheck();
+    } finally {
+      _$NoteScreenModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 liste: ${liste},
@@ -220,7 +283,9 @@ icerikController: ${icerikController},
 titleController: ${titleController},
 isItalic: ${isItalic},
 isBold: ${isBold},
-fontSize: ${fontSize}
+fontSize: ${fontSize},
+isUnderline: ${isUnderline},
+groupValueFontName: ${groupValueFontName}
     ''';
   }
 }

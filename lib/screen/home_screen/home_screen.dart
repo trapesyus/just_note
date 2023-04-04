@@ -5,6 +5,8 @@ import 'package:just_note/core/extensions/size_extension.dart';
 import 'package:just_note/core/extensions/navigate.extension.dart';
 import 'package:just_note/core/widgets/appbar_widget.dart';
 import 'package:just_note/core/widgets/label_text_widget.dart';
+import 'package:just_note/core/widgets/text_widget.dart';
+import 'package:just_note/core/widgets/textfield_widget.dart';
 import 'package:just_note/screen/add_note_screen/add_note_screen.dart';
 import 'package:just_note/screen/home_screen/home_screen_model/home_screen_model.dart';
 
@@ -32,56 +34,76 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: _homeScreenFloatingActionButton(context: context),
       appBar: _homeScreenCustomAppBar(),
       body: Observer(builder: (_) {
-        return Row(
+        return Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              child: ListView.builder(
-                reverse: false,
-                physics: const BouncingScrollPhysics(),
-                padding: EdgeInsets.symmetric(
-                    horizontal: context.getSizeWidth(size: 0.02)),
-                itemCount: _homeScreenModel.listViewOne.length,
-                scrollDirection: Axis.vertical,
-                itemBuilder: (context, index) {
-                  return Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      _homeScreenCardDesign(
-                          context: context,
-                          index: index,
-                          title: _homeScreenModel.listViewOne[index].title,
-                          text: _homeScreenModel.listViewOne[index].icerik),
-                    ],
-                  );
-                },
-              ),
+            CustomTextField(
+              controller: _homeScreenModel.searchController,
+              label: 'Notlarda Arama Yap',
+              isIcon: true,
+              sizeLeft: 0.1,
+              sizeRight: 0.1,
+              sizeTop: 0.02,
+              verticalHeight: 0.02,
+              horizontalHeight: 0.02,
+              labelStyle: true,
+              isIconOnTap: () async => await _homeScreenModel.searchQuery(),
             ),
-            Expanded(
-              child: ListView.builder(
-                reverse: false,
-                physics: const BouncingScrollPhysics(),
-                padding: EdgeInsets.symmetric(
-                    horizontal: context.getSizeWidth(size: 0.02)),
-                itemCount: _homeScreenModel.listViewTwoo.length,
-                scrollDirection: Axis.vertical,
-                itemBuilder: (context, index) {
-                  return Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      _homeScreenCardDesign(
-                          context: context,
-                          index: index,
-                          title: _homeScreenModel.listViewTwoo[index].title,
-                          text: _homeScreenModel.listViewTwoo[index].icerik),
-                    ],
-                  );
-                },
-              ),
-            ),
+            _homeScreenModel.searchController.value.text.isEmpty
+                ? Expanded(
+                    child: ListView.builder(
+                      physics: const BouncingScrollPhysics(),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: context.getSizeWidth(size: 0.02)),
+                      itemCount: _homeScreenModel.notes.length,
+                      scrollDirection: Axis.vertical,
+                      itemBuilder: (context, index) {
+                        return Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            _homeScreenCardDesign(
+                                context: context,
+                                index: index,
+                                title: _homeScreenModel.notes[index].title,
+                                text: _homeScreenModel.notes[index].icerik),
+                          ],
+                        );
+                      },
+                    ),
+                  )
+                : _homeScreenModel.searchList.isEmpty
+                    ? Center(
+                        child: CustomText(
+                            text:
+                                '"${_homeScreenModel.searchController.value.text}" ifadesi notlarda bulunamadı',
+                            color: ColorConstants.whiteColor),
+                      )
+                    : Expanded(
+                        child: ListView.builder(
+                          physics: const BouncingScrollPhysics(),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: context.getSizeWidth(size: 0.02)),
+                          itemCount: _homeScreenModel.searchList.length,
+                          scrollDirection: Axis.vertical,
+                          itemBuilder: (context, index) {
+                            return Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                _homeScreenCardDesign(
+                                    context: context,
+                                    index: index,
+                                    title: _homeScreenModel
+                                        .searchList[index].title,
+                                    text: _homeScreenModel
+                                        .searchList[index].icerik),
+                              ],
+                            );
+                          },
+                        ),
+                      ),
           ],
         );
       }),
@@ -101,7 +123,8 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(onPressed: () {}, icon: const Icon(Icons.settings))
         ],
-        centerTitle: true,
+        leading: const SizedBox(),
+        centerTitle: false,
         title: 'Notlarım',
         titleStyle: true,
         backgroundColor: ColorConstants.appBarBackGreenColor);
@@ -113,9 +136,11 @@ class _HomeScreenState extends State<HomeScreen> {
       required String title,
       required String text}) {
     return SizedBox(
-      width: context.getSizeWidth(size: 0.4),
+      width: context.getSizeWidth(size: 0.8),
       child: Card(
-        color: ColorConstants.cardColors[index],
+        color: index > 6
+            ? ColorConstants.cardColor3
+            : ColorConstants.cardColors[index],
         margin:
             EdgeInsets.symmetric(vertical: context.getSizeHeight(size: 0.01)),
         child: ListTile(
@@ -123,13 +148,27 @@ class _HomeScreenState extends State<HomeScreen> {
               .navigateTo(context: context),
           title: CustomLabelText(label: title),
           subtitle: CustomCardText(text: text),
-          trailing: Observer(builder: (context) {
-            return GestureDetector(
-              child:
-                  Icon(_homeScreenModel.isFav ? Icons.star : Icons.star_border),
-              onTap: () => _homeScreenModel.isFavCheck(),
-            );
-          }),
+          trailing: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              _homeScreenModel.notes[index].isFav == 1
+                  ? GestureDetector(
+                      child: const Icon(Icons.star),
+                      onTap: () async => await _homeScreenModel.isFavUpdate(
+                          context: context,
+                          id: _homeScreenModel.notes[index].id!),
+                    )
+                  : GestureDetector(
+                      child: const Icon(Icons.star_border_outlined),
+                      onTap: () async => await _homeScreenModel.isFavUpdate(
+                          context: context,
+                          id: _homeScreenModel.notes[index].id!),
+                    ),
+              CustomLabelText(
+                  label: _homeScreenModel.notes[index].date, color: true)
+            ],
+          ),
         ),
       ),
     );

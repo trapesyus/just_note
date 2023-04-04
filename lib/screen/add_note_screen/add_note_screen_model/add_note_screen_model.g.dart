@@ -89,6 +89,48 @@ mixin _$AddNoteScreenModel on AddNoteScreenModelBase, Store {
     });
   }
 
+  late final _$isUnderlineAtom =
+      Atom(name: 'AddNoteScreenModelBase.isUnderline', context: context);
+
+  @override
+  bool get isUnderline {
+    _$isUnderlineAtom.reportRead();
+    return super.isUnderline;
+  }
+
+  @override
+  set isUnderline(bool value) {
+    _$isUnderlineAtom.reportWrite(value, super.isUnderline, () {
+      super.isUnderline = value;
+    });
+  }
+
+  late final _$groupValueFontNameAtom =
+      Atom(name: 'AddNoteScreenModelBase.groupValueFontName', context: context);
+
+  @override
+  String get groupValueFontName {
+    _$groupValueFontNameAtom.reportRead();
+    return super.groupValueFontName;
+  }
+
+  @override
+  set groupValueFontName(String value) {
+    _$groupValueFontNameAtom.reportWrite(value, super.groupValueFontName, () {
+      super.groupValueFontName = value;
+    });
+  }
+
+  late final _$dropDownValueAsyncAction =
+      AsyncAction('AddNoteScreenModelBase.dropDownValue', context: context);
+
+  @override
+  Future<void> dropDownValue(
+      {required String value, required BuildContext context}) {
+    return _$dropDownValueAsyncAction
+        .run(() => super.dropDownValue(value: value, context: context));
+  }
+
   late final _$AddNoteScreenModelBaseActionController =
       ActionController(name: 'AddNoteScreenModelBase', context: context);
 
@@ -126,13 +168,26 @@ mixin _$AddNoteScreenModel on AddNoteScreenModelBase, Store {
   }
 
   @override
+  void isUnderlineCheck() {
+    final _$actionInfo = _$AddNoteScreenModelBaseActionController.startAction(
+        name: 'AddNoteScreenModelBase.isUnderlineCheck');
+    try {
+      return super.isUnderlineCheck();
+    } finally {
+      _$AddNoteScreenModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 titleController: ${titleController},
 icerikController: ${icerikController},
 isItalic: ${isItalic},
 isBold: ${isBold},
-fontSize: ${fontSize}
+fontSize: ${fontSize},
+isUnderline: ${isUnderline},
+groupValueFontName: ${groupValueFontName}
     ''';
   }
 }

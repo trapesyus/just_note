@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:just_note/core/extensions/navigate.extension.dart';
 import 'package:just_note/core/extensions/snackbar_extension.dart';
-import 'package:just_note/screen/home_screen/home_screen.dart';
+import 'package:just_note/screen/splash_screen/splash_screen.dart';
 import 'package:just_note/service/model/note_model.dart';
 import 'package:mobx/mobx.dart';
 
+import '../../../helper/preferences.dart';
+import '../../../helper/text_fonts.dart';
 import '../../../service/database/note_database.dart';
 part 'note_screen_model.g.dart';
 
@@ -28,7 +31,10 @@ abstract class NoteScreenModelBase with Store {
   bool isBold = false;
   @observable
   double fontSize = 16;
-
+  @observable
+  bool isUnderline = false;
+  @observable
+  String groupValueFontName = TextFonts.fontChoice[Preferences.fontName];
   @action
   void isItalicCheck() {
     isItalic = !isItalic;
@@ -57,6 +63,11 @@ abstract class NoteScreenModelBase with Store {
     isLoading = !isLoading;
   }
 
+  @action
+  void isUnderlineCheck() {
+    isUnderline = !isUnderline;
+  }
+
   final NoteDatabaseService noteDatabaseService = NoteDatabaseService();
   @action
   Future<void> getNote({required int index}) async {
@@ -68,12 +79,29 @@ abstract class NoteScreenModelBase with Store {
   }
 
   @action
+  Future<void> dropDownValue(
+      {required String value, required BuildContext context}) async {
+    groupValueFontName = value;
+    await setFont(fontName: groupValueFontName, context: context);
+  }
+
+  @action
+  Future<void> setFont(
+      {required String fontName, required BuildContext context}) async {
+    await Preferences.setPreferences(fontFamily: fontName).whenComplete(
+        () => const SplashScreen().navigateToPushReplacement(context: context));
+  }
+
+  @action
   Future<void> getUpdate(
       {required int id, required BuildContext context}) async {
     NoteDatabaseModel item = NoteDatabaseModel(
-        id: id, title: titleController.text, icerik: icerikController.text);
+        id: id,
+        title: titleController.text,
+        icerik: icerikController.text,
+        date: DateFormat('yyyy-MM-dd - kk:mm').format(DateTime.now()));
     await noteDatabaseService.updateRow(id, item).whenComplete(() {
-      const HomeScreen().navigateToPushReplacement(context: context);
+      const SplashScreen().navigateToPushReplacement(context: context);
       context.snackBarExtension(content: 'Not Başarıyla Güncellendi');
     });
   }
@@ -82,7 +110,7 @@ abstract class NoteScreenModelBase with Store {
   Future<void> getDelete(
       {required int id, required BuildContext context}) async {
     await noteDatabaseService.deleteRow(id).whenComplete(() {
-      const HomeScreen().navigateToPushReplacement(context: context);
+      const SplashScreen().navigateToPushReplacement(context: context);
       context.snackBarExtension(content: 'Silme İşlemi Başarıyla Gerçekleşti');
     });
   }

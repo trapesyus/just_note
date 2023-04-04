@@ -12,6 +12,7 @@ class ColorConstants {
   static const Color toggleDeactiveColor = Color(0xffF6F6F6);
   static const Color toggleTextColor = Color(0xffBDBDBD);
   static const Color toggleSelectedColor = Color(0xff5DB075);
+  static const Color whiteColor = Colors.white;
   static const Color iconBgColor = Color(0xFF3B3B3B);
   static const Color cardColor1 = Color(0xFFE8ED99);
   static const Color cardColor2 = Color(0xFFFFAB91);

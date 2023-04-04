@@ -1,5 +1,7 @@
-import 'dart:developer';
-
+import 'package:flutter/material.dart';
+import 'package:just_note/core/extensions/navigate.extension.dart';
+import 'package:just_note/core/extensions/snackbar_extension.dart';
+import 'package:just_note/screen/splash_screen/splash_screen.dart';
 import 'package:just_note/service/database/note_database.dart';
 import 'package:just_note/service/model/note_model.dart';
 import 'package:mobx/mobx.dart';
@@ -9,66 +11,58 @@ class HomeScreenModel = HomeScreenModelBase with _$HomeScreenModel;
 
 abstract class HomeScreenModelBase with Store {
   @observable
-  ObservableList<NoteDatabaseModel> notes =
-      ObservableList<NoteDatabaseModel>.of([]);
+  List<NoteDatabaseModel> notes = ObservableList<NoteDatabaseModel>.of([]);
   @observable
   bool isLoading = false;
   @observable
-  bool isFav = false;
+  bool isFavCheck = false;
   @observable
-  ObservableList<NoteDatabaseModel> listViewOne =
-      ObservableList<NoteDatabaseModel>.of([]);
+  TextEditingController searchController = TextEditingController();
   @observable
-  ObservableList<NoteDatabaseModel> listViewTwoo =
-      ObservableList<NoteDatabaseModel>.of([]);
+  List<NoteDatabaseModel> searchList = ObservableList<NoteDatabaseModel>.of([]);
+
   @action
   void isLoadingCheck() {
     isLoading = !isLoading;
   }
 
-  @action
-  void isFavCheck() {
-    isFav = !isFav;
+  Future<void> searchQuery() async {
+    searchList.clear();
+    await getNoteList();
+    for (var element in notes) {
+      if (element.icerik.contains(searchController.value.text)) {
+        searchList.add(element);
+      }
+    }
+  }
+
+  Future<void> isFavUpdate(
+      {required int id, required BuildContext context}) async {
+    NoteDatabaseService noteDatabaseService = NoteDatabaseService();
+    List<NoteDatabaseModel> tempList =
+        await noteDatabaseService.queryRowCount(id);
+
+    NoteDatabaseModel tempValue = NoteDatabaseModel(
+        id: id,
+        title: tempList[0].title,
+        icerik: tempList[0].icerik,
+        date: tempList[0].date,
+        isFav: tempList[0].isFav == 0 ? 1 : 0);
+    await noteDatabaseService.updateRow(id, tempValue).whenComplete(() {
+      const SplashScreen().navigateToPushReplacement(context: context);
+      tempList[0].isFav == 0
+          ? context.snackBarExtension(
+              content: '${tempList[0].title} Başlıklı not favorilere eklendi.')
+          : context.snackBarExtension(
+              content:
+                  '${tempList[0].title} Başlıklı not favorilerden çıkarıldı.');
+    });
   }
 
   @action
   Future<void> getNoteList() async {
     NoteDatabaseService noteDatabaseService = NoteDatabaseService();
+    notes.clear();
     notes.addAll(await noteDatabaseService.retrieveTable());
-    splitList(index: notes.length);
-  }
-
-  @action
-  void splitList({required int index}) {
-    if (index % 2 == 0) {
-      listViewOne.clear();
-      listViewTwoo.clear();
-      //16
-      for (int i = 0; i < index / 2; i++) {
-        listViewOne.add(notes[i]);
-      }
-      List<NoteDatabaseModel> temporaryList = [];
-      for (int i = index - 1; i >= index / 2; i--) {
-        temporaryList.add(notes[i]);
-      }
-      listViewTwoo.addAll(temporaryList.reversed);
-    } else if (index % 2 == 1) {
-      listViewOne.clear();
-      listViewTwoo.clear();
-      for (int i = 0; i < (index + 1) / 2; i++) {
-        //// 0 1 2 -- 7
-        listViewOne.add(notes[i]);
-      }
-      List<NoteDatabaseModel> tempList = [];
-
-      for (int i = index - 1; i > (index - 1) / 2; i--) {
-        // 14 13 12 110
-        tempList.add(notes[i]);
-      }
-      listViewTwoo.addAll(tempList.reversed);
-    }
-    log(notes.length.toString() + ' Asıl Liste');
-    log(listViewOne.length.toString() + 'liste 1 ');
-    log(listViewTwoo.length.toString() + 'liste 2 ');
   }
 }

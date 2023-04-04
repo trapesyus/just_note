@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:just_note/core/constants/color_constants.dart';
-import 'package:just_note/initialize/initialize.dart';
 import 'package:just_note/screen/splash_screen/splash_screen.dart';
 
 void main() async {
-  await Initialize.initialize();
   runApp(const MyApp());
 }
 

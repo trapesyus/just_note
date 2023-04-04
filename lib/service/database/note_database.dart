@@ -16,7 +16,9 @@ class NoteDatabaseService {
         await db.execute("""CREATE TABLE IF NOT EXISTS $tableName (
                         id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                         title TEXT NOT NULL,
-                        icerik TEXT NOT NULL)
+                        icerik TEXT NOT NULL,
+                        date TEXT NOT NULL,
+                        isFav INTEGER NOT NULL)
                           """);
       },
     );

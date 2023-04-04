@@ -13,13 +13,13 @@ mixin _$HomeScreenModel on HomeScreenModelBase, Store {
       Atom(name: 'HomeScreenModelBase.notes', context: context);
 
   @override
-  ObservableList<NoteDatabaseModel> get notes {
+  List<NoteDatabaseModel> get notes {
     _$notesAtom.reportRead();
     return super.notes;
   }
 
   @override
-  set notes(ObservableList<NoteDatabaseModel> value) {
+  set notes(List<NoteDatabaseModel> value) {
     _$notesAtom.reportWrite(value, super.notes, () {
       super.notes = value;
     });
@@ -41,51 +41,51 @@ mixin _$HomeScreenModel on HomeScreenModelBase, Store {
     });
   }
 
-  late final _$isFavAtom =
-      Atom(name: 'HomeScreenModelBase.isFav', context: context);
+  late final _$isFavCheckAtom =
+      Atom(name: 'HomeScreenModelBase.isFavCheck', context: context);
 
   @override
-  bool get isFav {
-    _$isFavAtom.reportRead();
-    return super.isFav;
+  bool get isFavCheck {
+    _$isFavCheckAtom.reportRead();
+    return super.isFavCheck;
   }
 
   @override
-  set isFav(bool value) {
-    _$isFavAtom.reportWrite(value, super.isFav, () {
-      super.isFav = value;
+  set isFavCheck(bool value) {
+    _$isFavCheckAtom.reportWrite(value, super.isFavCheck, () {
+      super.isFavCheck = value;
     });
   }
 
-  late final _$listViewOneAtom =
-      Atom(name: 'HomeScreenModelBase.listViewOne', context: context);
+  late final _$searchControllerAtom =
+      Atom(name: 'HomeScreenModelBase.searchController', context: context);
 
   @override
-  ObservableList<NoteDatabaseModel> get listViewOne {
-    _$listViewOneAtom.reportRead();
-    return super.listViewOne;
+  TextEditingController get searchController {
+    _$searchControllerAtom.reportRead();
+    return super.searchController;
   }
 
   @override
-  set listViewOne(ObservableList<NoteDatabaseModel> value) {
-    _$listViewOneAtom.reportWrite(value, super.listViewOne, () {
-      super.listViewOne = value;
+  set searchController(TextEditingController value) {
+    _$searchControllerAtom.reportWrite(value, super.searchController, () {
+      super.searchController = value;
     });
   }
 
-  late final _$listViewTwooAtom =
-      Atom(name: 'HomeScreenModelBase.listViewTwoo', context: context);
+  late final _$searchListAtom =
+      Atom(name: 'HomeScreenModelBase.searchList', context: context);
 
   @override
-  ObservableList<NoteDatabaseModel> get listViewTwoo {
-    _$listViewTwooAtom.reportRead();
-    return super.listViewTwoo;
+  List<NoteDatabaseModel> get searchList {
+    _$searchListAtom.reportRead();
+    return super.searchList;
   }
 
   @override
-  set listViewTwoo(ObservableList<NoteDatabaseModel> value) {
-    _$listViewTwooAtom.reportWrite(value, super.listViewTwoo, () {
-      super.listViewTwoo = value;
+  set searchList(List<NoteDatabaseModel> value) {
+    _$searchListAtom.reportWrite(value, super.searchList, () {
+      super.searchList = value;
     });
   }
 
@@ -112,35 +112,13 @@ mixin _$HomeScreenModel on HomeScreenModelBase, Store {
   }
 
   @override
-  void isFavCheck() {
-    final _$actionInfo = _$HomeScreenModelBaseActionController.startAction(
-        name: 'HomeScreenModelBase.isFavCheck');
-    try {
-      return super.isFavCheck();
-    } finally {
-      _$HomeScreenModelBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void splitList({required int index}) {
-    final _$actionInfo = _$HomeScreenModelBaseActionController.startAction(
-        name: 'HomeScreenModelBase.splitList');
-    try {
-      return super.splitList(index: index);
-    } finally {
-      _$HomeScreenModelBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   String toString() {
     return '''
 notes: ${notes},
 isLoading: ${isLoading},
-isFav: ${isFav},
-listViewOne: ${listViewOne},
-listViewTwoo: ${listViewTwoo}
+isFavCheck: ${isFavCheck},
+searchController: ${searchController},
+searchList: ${searchList}
     ''';
   }
 }

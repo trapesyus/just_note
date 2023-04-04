@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:just_note/helper/preferences.dart';
+
+import '../../helper/text_fonts.dart';
 
 // ignore: must_be_immutable
 class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
@@ -26,14 +29,12 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
       elevation: 0,
       title: Text(title ?? '',
           style: titleStyle
-              ? Theme.of(context)
-                  .textTheme
-                  .headlineMedium!
-                  .copyWith(color: Colors.white)
-              : Theme.of(context)
-                  .textTheme
-                  .headlineMedium!
-                  .copyWith(color: Colors.black)),
+              ? Theme.of(context).textTheme.headlineMedium!.copyWith(
+                  color: Colors.white,
+                  fontFamily: TextFonts.fontChoice[Preferences.fontName])
+              : Theme.of(context).textTheme.headlineMedium!.copyWith(
+                  color: Colors.black,
+                  fontFamily: TextFonts.fontChoice[Preferences.fontName])),
       centerTitle: centerTitle,
       actions: actions,
     );

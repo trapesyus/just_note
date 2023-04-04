@@ -3,12 +3,16 @@
 import 'package:flutter/material.dart';
 import 'package:just_note/core/extensions/size_extension.dart';
 
+import '../../helper/preferences.dart';
+import '../../helper/text_fonts.dart';
 import '../constants/color_constants.dart';
 
 class CustomTextField extends StatelessWidget {
   String? hintText;
   String? suffixText;
   String? label;
+  Function? isIconOnTap;
+  bool isIcon;
   bool isItalic;
   bool labelStyle;
   bool fillColor;
@@ -16,6 +20,7 @@ class CustomTextField extends StatelessWidget {
   bool hintTextStyle;
   bool passwordType;
   bool isBold;
+  bool isUnderline;
   double fontSize;
   double sizeTop;
   double sizeBottom;
@@ -28,6 +33,9 @@ class CustomTextField extends StatelessWidget {
 
   CustomTextField(
       {super.key,
+      this.isIconOnTap,
+      this.isIcon = false,
+      this.isUnderline = false,
       this.fontSize = 16,
       this.isBold = false,
       this.isItalic = false,
@@ -59,7 +67,9 @@ class CustomTextField extends StatelessWidget {
         child: TextField(
           style: TextStyle(
               color: Colors.white,
+              fontFamily: TextFonts.fontChoice[Preferences.fontName],
               fontSize: fontSize,
+              decoration: isUnderline ? TextDecoration.underline : null,
               fontStyle: isItalic ? FontStyle.italic : FontStyle.normal,
               fontWeight: isBold ? FontWeight.bold : FontWeight.w500),
           scrollPhysics: const BouncingScrollPhysics(),
@@ -71,6 +81,13 @@ class CustomTextField extends StatelessWidget {
           maxLines: null,
           keyboardType: TextInputType.multiline,
           decoration: InputDecoration(
+              suffixIcon: isIcon
+                  ? IconButton(
+                      onPressed: () => isIconOnTap!() ?? () {},
+                      icon: const Icon(Icons.search),
+                      color: ColorConstants.whiteColor,
+                    )
+                  : null,
               focusedBorder: const OutlineInputBorder(
                   borderSide:
                       BorderSide(width: 1, color: ColorConstants.iconBgColor)),
@@ -86,13 +103,18 @@ class CustomTextField extends StatelessWidget {
               alignLabelWithHint: false,
               labelText: label ?? '',
               labelStyle: labelStyle
-                  ? const TextStyle(color: ColorConstants.textFieldHintText)
+                  ? TextStyle(
+                      color: ColorConstants.textFieldHintText,
+                      fontFamily: TextFonts.fontChoice[Preferences.fontName])
                   : null,
               suffixText: suffixText ?? '',
-              suffixStyle:
-                  const TextStyle(color: ColorConstants.textFieldHintTextColor),
+              suffixStyle: TextStyle(
+                  color: ColorConstants.textFieldHintTextColor,
+                  fontFamily: TextFonts.fontChoice[Preferences.fontName]),
               hintStyle: hintTextStyle
-                  ? const TextStyle(color: ColorConstants.textFieldHintText)
+                  ? TextStyle(
+                      color: ColorConstants.textFieldHintText,
+                      fontFamily: TextFonts.fontChoice[Preferences.fontName])
                   : null,
               hintText: hintText ?? '',
               border: OutlineInputBorder(

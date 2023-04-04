@@ -2,11 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:just_note/core/extensions/navigate.extension.dart';
 import 'package:just_note/core/extensions/snackbar_extension.dart';
-import 'package:just_note/screen/home_screen/home_screen.dart';
+import 'package:just_note/helper/preferences.dart';
+import 'package:just_note/screen/splash_screen/splash_screen.dart';
 import 'package:just_note/service/database/note_database.dart';
 import 'package:just_note/service/model/note_model.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:intl/intl.dart';
 import 'package:mobx/mobx.dart';
+
+import '../../../helper/text_fonts.dart';
 part 'add_note_screen_model.g.dart';
 
 class AddNoteScreenModel = AddNoteScreenModelBase with _$AddNoteScreenModel;
@@ -22,6 +26,10 @@ abstract class AddNoteScreenModelBase with Store {
   bool isBold = false;
   @observable
   double fontSize = 16;
+  @observable
+  bool isUnderline = false;
+  @observable
+  String groupValueFontName = TextFonts.fontChoice[Preferences.fontName];
 
   @action
   void isItalicCheck() {
@@ -42,6 +50,24 @@ abstract class AddNoteScreenModelBase with Store {
     }
   }
 
+  @action
+  void isUnderlineCheck() {
+    isUnderline = !isUnderline;
+  }
+
+  @action
+  Future<void> dropDownValue(
+      {required String value, required BuildContext context}) async {
+    groupValueFontName = value;
+    await setFont(fontName: groupValueFontName, context: context);
+  }
+
+  Future<void> setFont(
+      {required String fontName, required BuildContext context}) async {
+    await Preferences.setPreferences(fontFamily: fontName).whenComplete(
+        () => const SplashScreen().navigateToPushReplacement(context: context));
+  }
+
   Future<void> addDatabase(
       {required String title,
       required String icerik,
@@ -50,8 +76,10 @@ abstract class AddNoteScreenModelBase with Store {
       context.snackBarExtension(content: 'Başlık ya da İçerik Boş Olmamalı');
       return;
     }
-    NoteDatabaseModel noteModel =
-        NoteDatabaseModel(icerik: icerik, title: title);
+    NoteDatabaseModel noteModel = NoteDatabaseModel(
+        icerik: icerik,
+        title: title,
+        date: DateFormat('yyyy-MM-dd - kk:mm').format(DateTime.now()));
     await insert(todo: noteModel, context: context);
   }
 
@@ -62,7 +90,7 @@ abstract class AddNoteScreenModelBase with Store {
     titleController.clear();
     icerikController.clear();
     if (context.mounted) {
-      const HomeScreen().navigateToPushReplacement(context: context);
+      const SplashScreen().navigateToPushReplacement(context: context);
       context.snackBarExtension(content: 'Not Başarıyla Eklendi :)');
     }
   }
