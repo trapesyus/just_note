@@ -44,9 +44,13 @@ abstract class AddNoteScreenModelBase with Store {
   @action
   void fontSizeChanger({required bool isFontSize}) {
     if (isFontSize == true) {
-      fontSize += 1;
+      if (fontSize < 50) {
+        fontSize += 1;
+      }
     } else {
-      fontSize -= 1;
+      if (fontSize > 8) {
+        fontSize -= 1;
+      }
     }
   }
 

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:just_note/core/extensions/navigate.extension.dart';
 import 'package:just_note/core/extensions/snackbar_extension.dart';
+import 'package:just_note/helper/language/language_service.dart';
+import 'package:just_note/helper/preferences.dart';
 import 'package:just_note/screen/splash_screen/splash_screen.dart';
 import 'package:just_note/service/database/note_database.dart';
 import 'package:just_note/service/model/note_model.dart';
 import 'package:mobx/mobx.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 part 'home_screen_model.g.dart';
 
 class HomeScreenModel = HomeScreenModelBase with _$HomeScreenModel;
@@ -20,7 +23,9 @@ abstract class HomeScreenModelBase with Store {
   TextEditingController searchController = TextEditingController();
   @observable
   List<NoteDatabaseModel> searchList = ObservableList<NoteDatabaseModel>.of([]);
-
+  @observable
+  String languageDropDownValue =
+      LanguageService.choosenLanguage['key'].ingilizce;
   @action
   void isLoadingCheck() {
     isLoading = !isLoading;
@@ -33,6 +38,20 @@ abstract class HomeScreenModelBase with Store {
       if (element.icerik.contains(searchController.value.text)) {
         searchList.add(element);
       }
+    }
+  }
+
+  Future<void> languageDropDownButton(
+      {required String value, required BuildContext context}) async {
+    final SharedPreferences preferences = await Preferences.prefs;
+    languageDropDownValue = value;
+    if (languageDropDownValue == 'Türkçe' ||
+        languageDropDownValue == 'Turkish') {
+      await preferences.setString('language', 'tr').whenComplete(() =>
+          const SplashScreen().navigateToPushReplacement(context: context));
+    } else {
+      await preferences.setString('language', 'en').whenComplete(() =>
+          const SplashScreen().navigateToPushReplacement(context: context));
     }
   }
 

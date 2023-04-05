@@ -20,8 +20,9 @@ class CustomLabelText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       label,
-      style: Theme.of(context).textTheme.labelMedium?.copyWith(
+      style: Theme.of(context).textTheme.titleMedium?.copyWith(
           fontFamily: TextFonts.fontChoice[Preferences.fontName],
+          fontSize: 18,
           color: isColorWhite
               ? Colors.white
               : color

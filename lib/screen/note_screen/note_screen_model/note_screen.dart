@@ -93,8 +93,7 @@ class _NoteScreenState extends State<NoteScreen> {
             : SingleChildScrollView(
                 child: CustomText(
                         color: Colors.white,
-                        text:
-                            ' ${_noteScreenModel.liste[0].title}\n${_noteScreenModel.liste[0].icerik}')
+                        text: _noteScreenModel.liste[0].icerik)
                     .getPadding(
                         context: context, sizeWidth: 0.02, sizeHeight: 0),
               ),

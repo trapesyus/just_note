@@ -1,0 +1,21 @@
+{
+    "tr": {
+        "notlarim": "Notlarım",
+        "notlardaAramaYap": "Notlarda Arama Yap",
+        "notEkle": "Not Ekle",
+        "baslik": "Başlık",
+        "icerik": "İçerik",
+        "turkce":"Türkçe",
+        "ingilizce":"İngilizce"
+        
+    },
+    "en": {
+        "notlarim": "My Notes",
+        "notlardaAramaYap": "Search Notes",
+        "notEkle": "Add Note",
+        "baslik": "Title",
+        "icerik": "Contents",
+        "turkce":"Turkish",
+        "ingilizce":"English"
+    }
+}

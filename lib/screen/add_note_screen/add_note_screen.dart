@@ -12,6 +12,7 @@ import 'package:just_note/core/widgets/textfield_widget.dart';
 import 'package:just_note/screen/add_note_screen/add_note_screen_model/add_note_screen_model.dart';
 import 'package:just_note/screen/home_screen/home_screen.dart';
 
+import '../../helper/language/language_service.dart';
 import '../../helper/text_fonts.dart';
 
 class AddNoteScreen extends StatelessWidget {
@@ -84,6 +85,7 @@ class AddNoteScreen extends StatelessWidget {
                         _addNoteScreenModel.fontSizeChanger(isFontSize: true),
                     color: ColorConstants.whiteColor),
                 CustomText(
+                    fontSize: 16,
                     text: _addNoteScreenModel.fontSize.toInt().toString(),
                     color: ColorConstants.whiteColor),
                 CustomIconButton(
@@ -98,7 +100,7 @@ class AddNoteScreen extends StatelessWidget {
       );
 
   CustomAppBar _customAppBar({required BuildContext context}) => CustomAppBar(
-          title: 'Not Ekle',
+          title: LanguageService.choosenLanguage['key'].notEkle,
           backgroundColor: ColorConstants.appBarBackGreenColor,
           titleStyle: true,
           centerTitle: false,
@@ -142,11 +144,7 @@ class AddNoteScreen extends StatelessWidget {
 
   DropdownMenuItem<String> _addNoteScreenDropDownMenuItem(String items) {
     return DropdownMenuItem(
-        value: items,
-        child: CustomText(
-          text: items,
-          color: Colors.white,
-        ));
+        value: items, child: CustomText(text: items, color: Colors.white));
   }
 
   CustomTextField _customTextFieldTitle() => CustomTextField(
@@ -154,7 +152,7 @@ class AddNoteScreen extends StatelessWidget {
         sizeRight: 0.25,
         isBold: _addNoteScreenModel.isBold,
         isItalic: _addNoteScreenModel.isItalic,
-        label: 'Başlık',
+        label: LanguageService.choosenLanguage['key'].baslik,
         isUnderline: false,
         controller: _addNoteScreenModel.titleController,
         labelStyle: true,
@@ -165,7 +163,7 @@ class AddNoteScreen extends StatelessWidget {
         horizontalHeight: 0.02,
       );
   CustomTextField _customTextFieldContent() => CustomTextField(
-      label: 'İçerik',
+      label: LanguageService.choosenLanguage['key'].icerik,
       controller: _addNoteScreenModel.icerikController,
       labelStyle: true,
       isUnderline: _addNoteScreenModel.isUnderline,

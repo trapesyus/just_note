@@ -4,29 +4,35 @@ import 'package:mobx/mobx.dart';
 class TextFonts {
   static final Map<String, dynamic> fontChoice = {
     'Roboto_regular': GoogleFonts.roboto().fontFamily,
+    'Inter_regular': GoogleFonts.inter().fontFamily,
+    'Oswald_regular': GoogleFonts.oswald().fontFamily,
+    'Ubuntu_regular': GoogleFonts.ubuntu().fontFamily,
+    'Karla_regular': GoogleFonts.karla().fontFamily,
     'OpenSans_regular': GoogleFonts.openSans().fontFamily,
-    'Poppins_regular': GoogleFonts.poppins().fontFamily,
-    'RobotoMono_regular': GoogleFonts.robotoMono().fontFamily,
-    'Sono_regular': GoogleFonts.sono().fontFamily,
-    'EduNswActFoundation_regular': GoogleFonts.eduNswActFoundation().fontFamily,
     'Inconsolata_regular': GoogleFonts.inconsolata().fontFamily,
     'Dosis_regular': GoogleFonts.dosis().fontFamily,
-    'Rajdhani_regular': GoogleFonts.rajdhani().fontFamily,
-    'DancingScript_regular': GoogleFonts.dancingScript().fontFamily,
-    'AguafinaScript_regular': GoogleFonts.aguafinaScript().fontFamily
+    'CrimsonText_regular': GoogleFonts.crimsonText().fontFamily,
+    'CormorantGaramond_regular': GoogleFonts.cormorantGaramond().fontFamily,
+    'Tillana_regular': GoogleFonts.tillana().fontFamily,
+    'GloriaHallelujah_regular': GoogleFonts.gloriaHallelujah().fontFamily,
+    'IrishGrover_regular': GoogleFonts.irishGrover().fontFamily,
+    'Oregano_regular': GoogleFonts.oregano().fontFamily,
   };
   @observable
   static final List<String> fontChoiceDropDownItems = [
     'Roboto_regular',
+    'Inter_regular',
+    'Oswald_regular',
+    'Ubuntu_regular',
     'OpenSans_regular',
-    'Poppins_regular',
-    'RobotoMono_regular',
-    'Sono_regular',
-    'EduNswActFoundation_regular',
+    'Karla_regular',
     'Inconsolata_regular',
     'Dosis_regular',
-    'Rajdhani_regular',
-    'DancingScript_regular',
-    'AguafinaScript_regular'
+    'CrimsonText_regular',
+    'CormorantGaramond_regular',
+    'Tillana_regular',
+    'GloriaHallelujah_regular',
+    'IrishGrover_regular',
+    'Oregano_regular',
   ];
 }

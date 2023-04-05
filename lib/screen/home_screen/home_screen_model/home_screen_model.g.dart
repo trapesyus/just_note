@@ -89,6 +89,23 @@ mixin _$HomeScreenModel on HomeScreenModelBase, Store {
     });
   }
 
+  late final _$languageDropDownValueAtom =
+      Atom(name: 'HomeScreenModelBase.languageDropDownValue', context: context);
+
+  @override
+  String get languageDropDownValue {
+    _$languageDropDownValueAtom.reportRead();
+    return super.languageDropDownValue;
+  }
+
+  @override
+  set languageDropDownValue(String value) {
+    _$languageDropDownValueAtom.reportWrite(value, super.languageDropDownValue,
+        () {
+      super.languageDropDownValue = value;
+    });
+  }
+
   late final _$getNoteListAsyncAction =
       AsyncAction('HomeScreenModelBase.getNoteList', context: context);
 
@@ -118,7 +135,8 @@ notes: ${notes},
 isLoading: ${isLoading},
 isFavCheck: ${isFavCheck},
 searchController: ${searchController},
-searchList: ${searchList}
+searchList: ${searchList},
+languageDropDownValue: ${languageDropDownValue}
     ''';
   }
 }
