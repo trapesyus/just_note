@@ -11,7 +11,9 @@ class CustomTextField extends StatelessWidget {
   String? hintText;
   String? suffixText;
   String? label;
+
   Function? isIconOnTap;
+  bool isIconTap;
   bool isIcon;
   bool isItalic;
   bool labelStyle;
@@ -33,6 +35,7 @@ class CustomTextField extends StatelessWidget {
 
   CustomTextField(
       {super.key,
+      this.isIconTap = false,
       this.isIconOnTap,
       this.isIcon = false,
       this.isUnderline = false,
@@ -77,8 +80,9 @@ class CustomTextField extends StatelessWidget {
           textAlignVertical: TextAlignVertical.top,
           controller: controller,
           obscureText: passwordType ? true : false,
-          cursorColor: Colors.blue,
+          cursorColor: ColorConstants.whiteColor,
           maxLines: null,
+          onChanged: isIconTap ? (value) => isIconOnTap!() : (value) => () {},
           keyboardType: TextInputType.multiline,
           decoration: InputDecoration(
               suffixIcon: isIcon

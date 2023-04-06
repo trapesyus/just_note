@@ -92,6 +92,7 @@ class _NoteScreenState extends State<NoteScreen> {
               ).getPadding(context: context, sizeWidth: 0.02, sizeHeight: 0)
             : SingleChildScrollView(
                 child: CustomText(
+                        fontSize: 16,
                         color: Colors.white,
                         text: _noteScreenModel.liste[0].icerik)
                     .getPadding(
@@ -103,6 +104,7 @@ class _NoteScreenState extends State<NoteScreen> {
 
   CustomAppBar _noteScreenAppBar(BuildContext context) {
     return CustomAppBar(
+        backgroundColor: ColorConstants.iconBgColor,
         actions: [
           IconButton(
               onPressed: () async {
@@ -181,7 +183,8 @@ class _NoteScreenState extends State<NoteScreen> {
         return _addNoteScreenDropDownMenuItem(items);
       }).toList(),
       onChanged: (String? value) async {
-        await _noteScreenModel.dropDownValue(value: value!, context: context);
+        await _noteScreenModel.dropDownValue(
+            value: value!, id: widget.id, context: context);
       },
     );
   }

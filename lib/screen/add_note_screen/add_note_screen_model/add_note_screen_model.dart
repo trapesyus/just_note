@@ -3,6 +3,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:just_note/core/extensions/navigate.extension.dart';
 import 'package:just_note/core/extensions/snackbar_extension.dart';
 import 'package:just_note/helper/preferences.dart';
+import 'package:just_note/screen/add_note_screen/add_note_screen.dart';
 import 'package:just_note/screen/splash_screen/splash_screen.dart';
 import 'package:just_note/service/database/note_database.dart';
 import 'package:just_note/service/model/note_model.dart';
@@ -68,8 +69,9 @@ abstract class AddNoteScreenModelBase with Store {
 
   Future<void> setFont(
       {required String fontName, required BuildContext context}) async {
-    await Preferences.setPreferences(fontFamily: fontName).whenComplete(
-        () => const SplashScreen().navigateToPushReplacement(context: context));
+    await Preferences.setPreferences(fontFamily: fontName).whenComplete(() =>
+        SplashScreen(navigateToWidget: AddNoteScreen())
+            .navigateToPushReplacement(context: context));
   }
 
   Future<void> addDatabase(
@@ -95,7 +97,7 @@ abstract class AddNoteScreenModelBase with Store {
     icerikController.clear();
     if (context.mounted) {
       const SplashScreen().navigateToPushReplacement(context: context);
-      context.snackBarExtension(content: 'Not Başarıyla Eklendi :)');
+      context.snackBarExtension(content: 'Not Başarıyla Eklendi.');
     }
   }
 

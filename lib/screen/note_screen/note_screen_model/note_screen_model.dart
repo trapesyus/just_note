@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:just_note/core/extensions/navigate.extension.dart';
 import 'package:just_note/core/extensions/snackbar_extension.dart';
+import 'package:just_note/screen/note_screen/note_screen_model/note_screen.dart';
 import 'package:just_note/screen/splash_screen/splash_screen.dart';
 import 'package:just_note/service/model/note_model.dart';
 import 'package:mobx/mobx.dart';
@@ -84,16 +85,21 @@ abstract class NoteScreenModelBase with Store {
 
   @action
   Future<void> dropDownValue(
-      {required String value, required BuildContext context}) async {
+      {required String value,
+      required BuildContext context,
+      required int id}) async {
     groupValueFontName = value;
-    await setFont(fontName: groupValueFontName, context: context);
+    await setFont(fontName: groupValueFontName, context: context, id: id);
   }
 
   @action
   Future<void> setFont(
-      {required String fontName, required BuildContext context}) async {
-    await Preferences.setPreferences(fontFamily: fontName).whenComplete(
-        () => const SplashScreen().navigateToPushReplacement(context: context));
+      {required String fontName,
+      required BuildContext context,
+      required int id}) async {
+    await Preferences.setPreferences(fontFamily: fontName).whenComplete(() =>
+        SplashScreen(navigateToWidget: NoteScreen(id: id))
+            .navigateToPushReplacement(context: context));
   }
 
   @action
@@ -105,7 +111,8 @@ abstract class NoteScreenModelBase with Store {
         icerik: icerikController.text,
         date: DateFormat('yyyy-MM-dd - kk:mm').format(DateTime.now()));
     await noteDatabaseService.updateRow(id, item).whenComplete(() {
-      const SplashScreen().navigateToPushReplacement(context: context);
+      SplashScreen(navigateToWidget: NoteScreen(id: id))
+          .navigateToPushReplacement(context: context);
       context.snackBarExtension(content: 'Not Başarıyla Güncellendi');
     });
   }

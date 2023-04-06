@@ -182,9 +182,9 @@ mixin _$NoteScreenModel on NoteScreenModelBase, Store {
 
   @override
   Future<void> dropDownValue(
-      {required String value, required BuildContext context}) {
+      {required String value, required BuildContext context, required int id}) {
     return _$dropDownValueAsyncAction
-        .run(() => super.dropDownValue(value: value, context: context));
+        .run(() => super.dropDownValue(value: value, context: context, id: id));
   }
 
   late final _$setFontAsyncAction =
@@ -192,9 +192,11 @@ mixin _$NoteScreenModel on NoteScreenModelBase, Store {
 
   @override
   Future<void> setFont(
-      {required String fontName, required BuildContext context}) {
+      {required String fontName,
+      required BuildContext context,
+      required int id}) {
     return _$setFontAsyncAction
-        .run(() => super.setFont(fontName: fontName, context: context));
+        .run(() => super.setFont(fontName: fontName, context: context, id: id));
   }
 
   late final _$getUpdateAsyncAction =

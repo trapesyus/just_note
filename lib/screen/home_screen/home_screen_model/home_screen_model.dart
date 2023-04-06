@@ -25,13 +25,16 @@ abstract class HomeScreenModelBase with Store {
   List<NoteDatabaseModel> searchList = ObservableList<NoteDatabaseModel>.of([]);
   @observable
   String languageDropDownValue =
-      LanguageService.choosenLanguage['key'].ingilizce;
+      LanguageService.choosenLanguage['key'].baslik == 'Başlık'
+          ? LanguageService.choosenLanguage['key'].turkce
+          : LanguageService.choosenLanguage['key'].ingilizce;
   @action
   void isLoadingCheck() {
     isLoading = !isLoading;
   }
 
   Future<void> searchQuery() async {
+    if (searchController.value.text.isEmpty) searchController.clear();
     searchList.clear();
     await getNoteList();
     for (var element in notes) {

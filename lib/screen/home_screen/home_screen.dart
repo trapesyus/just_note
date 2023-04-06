@@ -34,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: _homeScreenFloatingActionButton(context: context),
-      appBar: _homeScreenCustomAppBar(),
+      appBar: _homeScreenCustomAppBar(context: context),
       body: Observer(builder: (_) {
         return _homeScreenSearchBarNotesListView(context);
       }),
@@ -43,26 +43,20 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Column _homeScreenSearchBarNotesListView(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _homeScreenSearchBar(),
-        _homeScreenModel.searchController.value.text.isEmpty
-            ? Expanded(
-                child: _homeScreenNotesListView(context),
-              )
-            : _homeScreenModel.searchList.isEmpty
-                ? Center(
-                    child: CustomText(
-                        text:
-                            '"${_homeScreenModel.searchController.value.text}" ifadesi notlarda bulunamadı',
-                        color: ColorConstants.whiteColor),
-                  )
-                : Expanded(
-                    child: _homeScreenSearchListView(context),
-                  ),
-      ],
-    );
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _homeScreenSearchBar(),
+          _homeScreenModel.searchController.value.text.isEmpty
+              ? Expanded(child: _homeScreenNotesListView(context))
+              : _homeScreenModel.searchList.isEmpty
+                  ? Center(
+                      child: CustomText(
+                          text:
+                              '"${_homeScreenModel.searchController.value.text}" ifadesi notlarda bulunamadı',
+                          color: ColorConstants.whiteColor))
+                  : Expanded(child: _homeScreenSearchListView(context))
+        ]);
   }
 
   ListView _homeScreenSearchListView(BuildContext context) {
@@ -119,9 +113,9 @@ class _HomeScreenState extends State<HomeScreen> {
         child: const Icon(Icons.playlist_add));
   }
 
-  CustomAppBar _homeScreenCustomAppBar() {
+  CustomAppBar _homeScreenCustomAppBar({required BuildContext context}) {
     return CustomAppBar(
-        actions: [_homeScreenLanguageDropDownButton()],
+        actions: [_homeScreenLanguageDropDownButton(context: context)],
         leading: const SizedBox(),
         centerTitle: false,
         title: LanguageService.choosenLanguage['key'].notlarim,
@@ -129,11 +123,11 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: ColorConstants.appBarBackGreenColor);
   }
 
-  SizedBox _homeScreenLanguageDropDownButton() {
+  Padding _homeScreenLanguageDropDownButton({required BuildContext context}) {
     return SizedBox(
-      width: context.getSizeWidth(size: 0.2),
+      width: context.getSizeWidth(size: 0.24),
       child: _languageDropDownButton(),
-    );
+    ).getPaddingOnly(context: context, right: 0.01);
   }
 
   DropdownButton<String> _languageDropDownButton() {
@@ -160,6 +154,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return DropdownMenuItem(
         value: value,
         child: CustomText(
+          fontSize: 16,
           text: languageName,
           color: ColorConstants.whiteColor,
         ));
@@ -208,7 +203,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   CustomTextField _homeScreenSearchBar() => CustomTextField(
         controller: _homeScreenModel.searchController,
-        label: LanguageService.choosenLanguage['key'].icerik,
+        label: LanguageService.choosenLanguage['key'].notlardaAramaYap,
         isIcon: true,
         sizeLeft: 0.1,
         sizeRight: 0.1,
@@ -216,6 +211,7 @@ class _HomeScreenState extends State<HomeScreen> {
         verticalHeight: 0.02,
         horizontalHeight: 0.02,
         labelStyle: true,
+        isIconTap: true,
         isIconOnTap: () async => await _homeScreenModel.searchQuery(),
       );
   GestureDetector _homeScreenGestureDetector(
